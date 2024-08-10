@@ -18,6 +18,7 @@ public class InvestmentsController {
 
     @Autowired
     private InvestmentService investmentService;
+    @Autowired
     private UserService userService;
 
     @PostMapping
@@ -31,14 +32,11 @@ public class InvestmentsController {
 
         User user = userService.getUserById(userId);
 
-
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
 
-
         List<Investment> investmentsByUser = investmentService.getInvestmentsByUser(Optional.of(user));
-
 
         if (investmentsByUser.isEmpty()) {
             return ResponseEntity.noContent().build();

@@ -16,7 +16,7 @@ public class UsersController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User cratedUser = userService.createUser(user);
         return new ResponseEntity<>(cratedUser, HttpStatus.CREATED);
@@ -24,8 +24,18 @@ public class UsersController {
 
     @GetMapping("/{userName}")
     public ResponseEntity<User> getUserByUsername(@PathVariable String userName) {
-        Optional<User> byUsername = userService.findByUsername(userName);
-        return byUsername.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        User byUsername = userService.findByUsername(userName);
+        return byUsername != null ? ResponseEntity.ok(byUsername) : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/login")
+    public User login(@RequestParam String username, @RequestParam String password) {
+        User user = userService.findByUsername(username);
+        if (user != null && user.getPassword().equals(password)) {
+            return user;
+        } else {
+            throw new RuntimeException("Invalid credentials");
+        }
     }
 
     @GetMapping("id/{id}")

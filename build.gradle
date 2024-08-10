@@ -20,6 +20,8 @@ dependencies {
     implementation 'com.mysql:mysql-connector-j:8.2.0'
     implementation 'javax.persistence:javax.persistence-api:2.2'
     implementation 'com.h2database:h2:2.2.224'
+//    implementation 'org.springframework.boot:spring-boot-starter-security:3.1.5'
+//    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.33'
 
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '3.3.2'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.1.0'

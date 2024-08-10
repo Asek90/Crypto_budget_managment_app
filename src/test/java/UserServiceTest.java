@@ -9,6 +9,7 @@ import springApp.services.UserService;
 
 
 import java.util.Optional;
+import java.util.function.BooleanSupplier;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -40,9 +41,9 @@ public class UserServiceTest {
     @Test
     public void testFindByUsername() {
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(testUser));
-        Optional<User> foundUser = userService.findByUsername("testuser");
-        assertTrue(foundUser.isPresent());
-        assertEquals("testuser", foundUser.get().getUsername());
+        User foundUser = userService.findByUsername("testuser");
+        assertNotNull(foundUser);
+        assertEquals("testuser", foundUser.getUsername());
     }
 
     @Test
