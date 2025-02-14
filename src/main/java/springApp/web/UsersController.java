@@ -4,19 +4,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springApp.config.JwtAuthFilter;
+import springApp.dto.LoginRequest;
 import springApp.model.User;
+//import springApp.security.JwtTokenProvider;
 import springApp.services.UserService;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UsersController {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping("/create")
+    @Autowired
+    private JwtAuthFilter jwtAuthFilter;
+
+
+    @PostMapping("/register")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User cratedUser = userService.createUser(user);
         return new ResponseEntity<>(cratedUser, HttpStatus.CREATED);
@@ -29,12 +35,13 @@ public class UsersController {
     }
 
     @PostMapping("/login")
-    public User login(@RequestParam String username, @RequestParam String password) {
-        User user = userService.findByUsername(username);
-        if (user != null && user.getPassword().equals(password)) {
-            return user;
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        User user = userService.findByUsername(loginRequest.getUsername());
+        if (user != null && user.getPassword().equals(loginRequest.getPassword())) {
+            String token = jwtAuthFilter.generateToken(user.getUsername());
+            return ResponseEntity.ok(new JwtResponse(token));
         } else {
-            throw new RuntimeException("Invalid credentials");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 

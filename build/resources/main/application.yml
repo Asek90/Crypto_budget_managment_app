@@ -5,6 +5,10 @@ spring:
     url: jdbc:mysql://localhost:3306/crypto_budget_db
     username: root
     password: 7569166
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+jwt:
+  secret: 1B92ED4D16F1282E95E58EAD8F68B1234SAKD1ASODKASPDOKA
 
   jpa:
     hibernate:
@@ -17,3 +21,7 @@ spring:
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
+
+logging:
+  level:
+    org.springframework: DEBUG

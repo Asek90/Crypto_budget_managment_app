@@ -14,14 +14,14 @@ public class UserService {
     private UserRepository userRepository;
 
     public User createUser(User user) {
-        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+        if (userRepository.findByUsername(user.getUsername()) != null) {
             throw new RuntimeException("Username already exists");
         }
         return userRepository.save(user);
     }
 
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username).orElse(null);
+        return userRepository.findByUsername(username);
     }
 
     public User getUserById(Long id) {
